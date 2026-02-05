@@ -1,0 +1,30 @@
+ketik nano nama_dompet.py
+isi kode di bawah ini
+import json
+import os
+
+def kirim_koin():
+    path = os.path.expanduser('~/.koin_dezza_ultimate/mainnet.json')
+    
+    if not os.path.exists(path):
+        print("Dompet tidak ditemukan!")
+        return
+
+    with open(path, 'r') as f:
+        data = json.load(f)
+    
+    print(f"Saldo Anda: {data.get('balance', 0)} DZL")
+    tujuan = input("Masukkan alamat tujuan: ")
+    jumlah = float(input("Masukkan jumlah DZL: "))
+    
+    if data['balance'] >= jumlah:
+        data['balance'] -= jumlah
+        with open(path, 'w') as f:
+            json.dump(data, f, indent=4)
+        print("Koin Berhasil Dikirim!")
+    else:
+        print("Saldo tidak cukup!")
+
+if __name__ == "__main__":
+    kirim_koin
+()
